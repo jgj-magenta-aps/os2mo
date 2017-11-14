@@ -1,0 +1,4 @@
+---
+# tasks file for build-mora
+- name: Build MORa
+  command: /vagrant/manage.py build

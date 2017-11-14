@@ -1,0 +1,57 @@
+---
+# tasks file for install-mora
+- name: Link /vagrant to /srv/mora
+  file:
+    src: /vagrant
+    dest: /srv/mora
+    state: link
+- name: Add system user
+  user:
+    name: mora
+    system: yes
+    home: /srv/mora
+    shell: /usr/sbin/nologin
+    group: www-data
+    state: present
+  become: true
+- name: Install gunicorn
+  pip:
+    name: gunicorn
+    executable: /usr/bin/pip3
+- name: Install gevent
+  pip:
+    name: gevent
+    executable: /usr/bin/pip3
+- name: Create /var/log/mora
+  file:
+    path: /var/log/mora
+    state: directory
+    owner: mora
+    group: www-data
+  become: true
+- name: Create /run/mora
+  file:
+    path: /run/mora
+    state: directory
+    owner: mora
+    group: www-data
+  become: true
+- name: Copy mora.service
+  template:
+    src: mora.service.j2
+    dest: /etc/systemd/system/mora.service
+    mode: 0644
+  become: true
+- name: Copy mora.socket
+  copy:
+    src: "{{root_dir}}/config/mora.socket"
+    dest: /etc/systemd/system
+    mode: 0644
+  become: true
+- name: Copy mora.conf
+  copy:
+    src: "{{root_dir}}/config/mora.conf"
+    dest: /etc/tmpfiles.d
+    mode: 0644
+  become: true
+

@@ -1,0 +1,9 @@
+---
+# tasks file for dependencies
+- name: Install system dependencies
+  become: true
+  apt: name={{item}} state=installed
+  with_items:
+    - python3-venv
+    - nodejs-legacy
+    - npm
