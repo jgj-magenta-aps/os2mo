@@ -88,7 +88,7 @@ class Writing(util.LoRATestCase):
         )
 
         self.assertRequestResponse(
-            '/service/e/00000000-0000-0000-0000-000000000000/create',
+            '/service/e/{}/create'.format(userid),
             {
                 'error': True,
                 'error_key': 'E_INVALID_TYPE',
@@ -160,7 +160,14 @@ class Writing(util.LoRATestCase):
                 'description': "Missing uuid",
                 'key': 'uuid',
                 'status': 400,
-                'obj': {}
+                'obj': {
+                    'itsystem': {},
+                    'type': 'it',
+                    'validity': {
+                        'from': None,
+                        'to': None,
+                    },
+                },
             },
             json=[
                 {
