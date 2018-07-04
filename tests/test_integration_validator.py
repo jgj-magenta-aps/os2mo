@@ -155,6 +155,23 @@ class TestValidator(TestHelper):
             validator.is_date_range_in_employee_range(employee_uuid,
                                                       valid_from, valid_to)
 
+    def test_is_date_range_in_employee_valid_raises_outside_range2(self):
+        """Assert that a validation error is raised when the is before the
+        employee range
+
+        """
+
+        # Arrange
+        self.load_sample_structures()
+        employee_uuid = '53181ed2-f1de-4c4a-a8fd-ab358c2c454a'  # Anders And
+        valid_from = mora_util.parsedatetime("1910-01-01")
+        valid_to = mora_util.parsedatetime("1920-01-01")
+
+        # Act & Assert
+        with self.assertRaises(exceptions.HTTPException):
+            validator.is_date_range_in_employee_range(employee_uuid,
+                                                      valid_from, valid_to)
+
     def test_is_date_range_in_employee_valid_inside_range(self):
         """Assert that a validation error is not raised when the range is
         inside employee range"""
@@ -169,6 +186,33 @@ class TestValidator(TestHelper):
         # Should be callable without raising exception
         validator.is_date_range_in_employee_range(employee_uuid,
                                                   valid_from, valid_to)
+
+
+    def test_is_date_range_in_employee_valid_not_found(self):
+        """Assert that a validation error is raised when the user doesn't
+        exist"""
+
+        # Arrange
+        self.load_sample_structures()
+        employee_uuid = '00000000-0000-0000-0000-000000000000'
+        valid_from = mora_util.parsedatetime("2020-01-01")
+        valid_to = mora_util.parsedatetime("2040-01-01")
+
+        # Act & Assert
+        # Should be callable without raising exception
+        with self.assertRaises(exceptions.HTTPException) as ctxt:
+            validator.is_date_range_in_employee_range(employee_uuid,
+                                                      valid_from, valid_to)
+
+        self.assertEqual(
+            {
+                'description': 'User not found.',
+                'error': True,
+                'error_key': 'E_USER_NOT_FOUND',
+                'status': 404,
+            },
+            ctxt.exception.response.json,
+        )
 
     def test_is_distinct_responsibility_with_duplicate(self):
         with self.assertRaises(exceptions.HTTPException) as ctxt:

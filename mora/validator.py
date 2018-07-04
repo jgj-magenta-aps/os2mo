@@ -149,11 +149,20 @@ def is_distinct_responsibility(
 
 
 def is_date_range_in_employee_range(employee_uuid, valid_from, valid_to):
+    # query for the full range of effects; otherwise,
+    # _get_active_validity() won't return any useful data for time
+    # intervals predating the creation of the user
     scope = lora.Connector(
-        virkningfra=util.to_lora_time(valid_from),
-        virkningtil=util.to_lora_time(valid_to)
+        virkningfra=util.to_lora_time(util.NEGATIVE_INFINITY),
+        virkningtil=util.to_lora_time(util.POSITIVE_INFINITY)
     ).bruger
+
     employee = scope.get(employee_uuid)
+
+    if not employee:
+        raise exceptions.HTTPException(
+            exceptions.ErrorCodes.E_USER_NOT_FOUND,
+        )
 
     gyldighed_key = "brugergyldighed"
 
