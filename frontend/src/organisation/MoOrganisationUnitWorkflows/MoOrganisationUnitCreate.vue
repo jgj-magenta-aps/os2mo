@@ -26,8 +26,7 @@
       <mo-address-entry 
         class="mt-3" 
         v-model="phone" 
-        preselected-type="Telefon" 
-        validity-hidden 
+        validity-hidden
         required
       />
 
