@@ -19,9 +19,9 @@ test('Workflow: move unit', async t => {
   let today = moment()
 
   await t
-    .setTestSpeed(0.8)
 
     .hover('#mo-workflow', {offsetX: 10, offsetY: 90})
+    .expect(Selector('.btn-unit-move').visible).ok()
     .click('.btn-unit-move')
 
     .expect(dialog.exists).ok('Opened dialog')

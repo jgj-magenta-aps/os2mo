@@ -18,8 +18,8 @@ test('Workflow: terminate employee', async t => {
   let today = moment()
 
   await t
-    .setTestSpeed(0.8)
     .hover('#mo-workflow', {offsetX: 10, offsetY: 180})
+    .expect(Selector('.btn-employee-terminate').visible).ok()
     .click('.btn-employee-terminate')
 
     .expect(dialog.exists).ok('Opened dialog')

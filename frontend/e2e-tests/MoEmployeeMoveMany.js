@@ -21,8 +21,8 @@ test('Workflow: moveMany employee', async t => {
   let today = moment()
 
   await t
-    .setTestSpeed(0.8)
     .hover('#mo-workflow', {offsetX: 10, offsetY: 140})
+    .expect(Selector('.btn-employee-moveMany').visible).ok()
     .click('.btn-employee-moveMany')
 
     .expect(dialog.exists).ok('Opened dialog')

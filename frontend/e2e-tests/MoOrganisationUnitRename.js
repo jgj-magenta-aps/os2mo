@@ -17,9 +17,9 @@ test('Workflow: rename unit', async t => {
   let today = moment()
 
   await t
-    .setTestSpeed(0.8)
 
     .hover('#mo-workflow', {offsetX: 10, offsetY: 50})
+    .expect(Selector('.btn-unit-rename').visible).ok()
     .click('.btn-unit-rename')
 
     .expect(dialog.exists).ok('Opened dialog')
