@@ -23,8 +23,12 @@ export default {
       .catch(err => {
         console.warn('request failed', err)
 
-        if (err.response.status === 401 || err.response.status === 403) {
+        if (err.response.status === 401) {
           return store.dispatch(AUTH_REQUEST)
+        }
+
+        if (err.response.status === 403) {
+          //TODO: Do a thing
         }
 
         return new Promise(function (resolve, reject) {
