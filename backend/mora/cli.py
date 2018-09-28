@@ -47,37 +47,6 @@ topdir = os.path.dirname(backenddir)
 frontenddir = os.path.join(topdir, 'frontend')
 
 
-class AppGroup(flask.cli.FlaskGroup):
-    '''Subclass of default app Flask group that adds -h to all commands.'''
-    __context_settings = {
-        'help_option_names': ['-h', '--help']
-    }
-
-    def command(self, *args, **kwargs):
-        ''
-        kwargs.setdefault('context_settings', self.__context_settings)
-
-        return super().command(*args, **kwargs)
-
-    def group(self, *args, **kwargs):
-        ''
-        kwargs.setdefault('context_settings', self.__context_settings)
-
-        return super().group(*args, **kwargs)
-
-
-def create_app(self):
-    from . import app
-
-    return app.app
-
-
-group = AppGroup(
-    'mora', help=__doc__,
-    create_app=create_app,
-)
-
-
 class Exit(click.ClickException):
     def __init__(self, exit_code: int=1):
         self.exit_code = exit_code
@@ -93,6 +62,7 @@ def requires_auth(func):
                   help="account password")
     @click.option('--insecure', '-k', is_flag=True,
                   help="disable SSL/TLS security checks")
+    @flask.cli.with_appcontext
     def wrapper(*args, **options):
         insecure = options.pop('insecure')
 
@@ -139,7 +109,7 @@ def requires_auth(func):
     return functools.update_wrapper(wrapper, func)
 
 
-@group.command()
+@click.command()
 @click.argument('target', required=False)
 def build(target=None):
     'Build the frontend application.'
@@ -153,27 +123,7 @@ def build(target=None):
             cwd=frontenddir)
 
 
-@group.command()
-def develop():
-    'Run for development.'
-
-    with subprocess.Popen(['yarn', 'start'],
-                          close_fds=True,
-                          cwd=frontenddir) as proc:
-        try:
-            flask.current_app.run()
-        finally:
-            proc.send_signal(signal.SIGINT)
-            proc.wait()
-
-
-@group.command()
-@click.argument('args', nargs=-1)
-def python(args):
-    os.execv(sys.executable, (sys.executable,) + args)
-
-
-@group.command(with_appcontext=False)
+@click.command()
 @click.option('--verbose', '-v', count=True,
               help='Show more output.')
 @click.option('--quiet', '-q', is_flag=True,
@@ -200,6 +150,8 @@ def python(args):
 @flask.cli.with_appcontext
 def test(tests, quiet, verbose, minimox_dir, browser, do_list,
          keywords, xml_report, **kwargs):
+    sys.path.insert(0, backenddir)
+
     verbosity = 0 if quiet else verbose + 1
 
     if minimox_dir:
@@ -291,7 +243,7 @@ def test(tests, quiet, verbose, minimox_dir, browser, do_list,
         raise Exit()
 
 
-@group.command('auth')
+@click.command('auth')
 @click.option('--user', '-u',
               help="account user name",
               prompt='Enter user name')
@@ -305,6 +257,7 @@ def test(tests, quiet, verbose, minimox_dir, browser, do_list,
               help="disable SSL/TLS security checks")
 @click.option('--cert-only', '-c', is_flag=True,
               help="output embedded certificates in PEM form")
+@flask.cli.with_appcontext
 def auth_(**options):
     if options['insecure']:
         warnings.simplefilter('ignore', urllib3.exceptions.HTTPWarning)
@@ -349,7 +302,7 @@ def auth_(**options):
             sys.stdout.write(ssl.DER_cert_to_PEM_cert(data))
 
 
-@group.command()
+@click.command()
 @click.argument('paths', nargs=-1)
 @requires_auth
 def get(paths):
@@ -370,7 +323,7 @@ def get(paths):
             json.dump(exc.body, sys.stdout, indent=2)
 
 
-@group.command()
+@click.command()
 @click.argument('path')
 @click.argument('input', type=click.File('rb'), default='-')
 @requires_auth
@@ -378,7 +331,7 @@ def update(path, input):
     lora.put(path, json.load(input))
 
 
-@group.command('import')
+@click.command('import')
 @click.argument('name')
 @click.argument('sheets', nargs=-1, type=click.Path())
 @click.option('--target', '-t', default=settings.LORA_URL)
@@ -425,7 +378,7 @@ def import_file(name, **kwargs):
     module.run(**kwargs)
 
 
-@group.command('sheet-convert', with_appcontext=False)
+@click.command('sheet-convert')
 @click.option('--sheet', '-s',
               help='only convert the given sheet')
 @click.option('--quiet', '-q', is_flag=True,
@@ -454,7 +407,7 @@ def sheetconvert(sheet, quiet, source, destination):
         )
 
 
-@group.command('load-fixtures')
+@click.command('load-fixtures')
 @click.option('--quiet', '-q', is_flag=True,
               help='Suppress all output.')
 @click.option('--minimal', is_flag=True,
@@ -464,11 +417,14 @@ def sheetconvert(sheet, quiet, source, destination):
                     'objects'))
 @click.option('--delete', '-d', is_flag=True,
               help=('empty and delete organisation first'))
+@flask.cli.with_appcontext
 @requires_auth
 def load_fixtures(**kwargs):
     '''
     Import the sample fixtures into LoRA.
     '''
+
+    sys.path.insert(0, backenddir)
 
     from tests import util
 
@@ -478,7 +434,7 @@ def load_fixtures(**kwargs):
     )
 
 
-@group.command('run-with-db')
+@click.command()
 @click.option('hostname', '--host', '-h', default='localhost',
               help='The interface to bind to.')
 @click.option('--port', '-p', default=5000,
@@ -562,7 +518,7 @@ def run_with_db(**kwargs):
             werkzeug.serving.run_simple(application=app.app, **kwargs)
 
 
-@group.command()
+@click.command()
 @click.option('--quiet', '-q', is_flag=True,
               help='Suppress all output.')
 @click.option('--dry-run', '-n', is_flag=True,
@@ -626,7 +582,3 @@ def fixroots(**kwargs):
                                    unitid),
                     unit,
                 )
-
-
-if __name__ == '__main__':
-    group(prog_name=os.environ.get('MORA_PROG_NAME'))

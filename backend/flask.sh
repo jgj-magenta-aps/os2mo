@@ -14,10 +14,10 @@ then
     "$VENV"/bin/pip install -qe "$DIR"
 fi
 
-# detected by 'cli.py', gets us the appropriate "Usage:" printout
-export MORA_PROG_NAME="$0"
-
 # we also have '$VENV/bin/python', but use python -m so that we can
 # override the program name
+
+export FLASK_ENV=development
+export FLASK_APP=mora.app:app
 
 exec "$VENV"/bin/flask "$@"

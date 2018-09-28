@@ -25,8 +25,7 @@ mkdir -p "$BUILD_DIR"/coverage "$BUILD_DIR"/reports
 #
 coverage run \
          --rcfile="$TOPDIR"/backend/.coveragerc \
-         -m mora.cli \
-         test --verbose --buffer \
+         -m flask test --verbose --buffer \
          --xml-report "$BUILD_DIR"/reports \
          "$@"
 

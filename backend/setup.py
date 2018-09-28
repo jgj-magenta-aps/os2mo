@@ -110,6 +110,18 @@ setuptools.setup(
         'console_scripts': [
             'mora = mora.cli:group',
         ],
+        'flask.commands': [
+            'build=mora.cli:build',
+            'test=mora.cli:test',
+            'auth=mora.cli:auth_',
+            'get=mora.cli:get',
+            'update=mora.cli:update',
+            'import=mora.cli:import_file',
+            'sheet-convert=mora.cli:sheetconvert',
+            'load-fixtures=mora.cli:load_fixtures',
+            'fixroots=mora.cli:fixroots',
+            'run-with-db=mora.cli:run_with_db',
+        ],
     },
 
     classifiers=[
