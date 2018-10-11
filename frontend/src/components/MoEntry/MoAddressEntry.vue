@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="form-row">
+    <div class="form-row" :id="containerId">
       <mo-facet-picker 
         v-show="noPreselectedType"
         facet="address_type" 
@@ -11,16 +11,28 @@
       
       <div class="form-group col">
         <div v-if="entry.address_type">
-          <mo-address-search v-if="entry.address_type.scope=='DAR'" :label="entry.address_type.name" v-model="address"/>
-          <label :for="nameId" v-if="entry.address_type.scope!='DAR'">{{entry.address_type.name}}</label>
+          <vue-dawa
+            @select="selectedAddress"
+            :addressId="value.uuid"
+            :options="dawaOptions"
+            fieldClasses="form-control"
+            :showMax="10"
+            :fieldId="nameId"
+            :containerId="containerId">
+            <label
+              :for="nameId"
+              slot="label-top">
+              {{entry.address_type.name}}
+            </label>
+          </vue-dawa>
           <input
             :name="nameId" 
             v-if="entry.address_type.scope!='DAR'"
             :data-vv-as="entry.address_type.name"
             v-model="contactInfo" 
-            type="text" 
+            type="text"
             class="form-control"
-            v-validate="validityRules" 
+            v-validate="validityRules"
           >
         </div>
         <span v-show="errors.has(nameId)" class="text-danger">
@@ -30,7 +42,7 @@
     </div>
     <mo-date-picker-range
       class="address-date"
-      v-model="entry.validity" 
+      v-model="entry.validity"
       :initially-hidden="validityHidden"
     />
   </div>
@@ -41,7 +53,8 @@
    * A address entry component.
    */
 
-  import MoAddressSearch from '@/components/MoAddressSearch/MoAddressSearch'
+  import Organisation from '@/api/Organisation'
+  import VueDawa from 'vue-dawa'
   import MoFacetPicker from '@/components/MoPicker/MoFacetPicker'
   import MoDatePickerRange from '@/components/MoDatePicker/MoDatePickerRange'
 
@@ -56,7 +69,7 @@
     },
 
     components: {
-      MoAddressSearch,
+      VueDawa,
       MoFacetPicker,
       MoDatePickerRange
     },
@@ -94,6 +107,14 @@
         * The contactInfo, entry, address, addressScope component value.
         * Used to detect changes and restore the value.
         */
+        dawaOptions: {
+          // adgangsadresserOnly: false,
+          // type: 'adgangsadresse',
+          params: {
+            startfra: 'adgangsadresse',
+            kommunekode: Organisation.getSelectedOrganisation().municipality_code
+          }
+        },
         contactInfo: '',
         entry: {
           validity: {},
@@ -103,6 +124,21 @@
         },
         address: null,
         addressScope: null
+      }
+    },
+
+    methods: {
+      selectedAddress (val) {
+        if (val.data.id) {
+          this.entry.uuid = val.data.id
+          this.entry.address = {
+            name: val.data.tekst,
+            uuid: val.data.id
+          }
+        } else {
+          this.entry.address = null
+          delete this.entry.uuid
+        }
       }
     },
 
@@ -134,6 +170,10 @@
        */
       nameId () {
         return 'scope-type-' + this._uid
+      },
+
+      containerId () {
+        return 'scope-type-' + this._uid + '-container'
       },
 
       /**
@@ -180,7 +220,7 @@
         handler (val) {
           if (val == null) return
           if (this.entry.address_type.scope === 'DAR') {
-            this.entry.uuid = val.location.uuid
+            this.entry.uuid = val.uuid
           } else {
             this.entry.value = val
           }

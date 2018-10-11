@@ -18,6 +18,7 @@ import Icon from 'vue-awesome/components/Icon'
 require('../node_modules/bootstrap/dist/css/bootstrap.css')
 require('../node_modules/bootstrap-vue/dist/bootstrap-vue')
 require('./assets/css/global.css')
+require('../node_modules/vue-dawa/dist/vue-dawa.min.css')
 
 const moment = require('moment')
 require('moment/locale/da')
