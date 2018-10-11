@@ -101,6 +101,7 @@ class Tests(util.LoRATestCase):
             {
                 'name': 'Torkild Testperson',
                 'org': {
+                    'municipality_code': 751,
                     'name': 'Aarhus Universitet',
                     'user_key': 'AU',
                     'uuid': '456362c4-0ee4-4e5e-a72c-751239745e62',
@@ -139,6 +140,7 @@ class Tests(util.LoRATestCase):
                 'name': 'Teodor Testfætter',
                 'user_key': 'testfætter',
                 'org': {
+                    'municipality_code': 751,
                     'name': 'Aarhus Universitet',
                     'user_key': 'AU',
                     'uuid': '456362c4-0ee4-4e5e-a72c-751239745e62',
@@ -277,6 +279,7 @@ class Tests(util.LoRATestCase):
             {
                 'name': 'Torkild Testperson',
                 'org': {
+                    'municipality_code': 751,
                     'name': 'Aarhus Universitet',
                     'user_key': 'AU',
                     'uuid': '456362c4-0ee4-4e5e-a72c-751239745e62',

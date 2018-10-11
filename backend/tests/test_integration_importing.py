@@ -619,6 +619,7 @@ class IntegrationTests(util.LoRATestCase):
                 'user_key': 'BALLERUP',
                 'uuid': '9f42976b-93be-4e0b-9a25-0dcb8af2f6b4',
                 'org': {
+                    'municipality_code': 151,
                     'name': 'Ballerup Kommune',
                     'user_key': 'Ballerup Kommune',
                     'uuid': '3a87187c-f25a-40a1-8d42-312b2e2b43bd',
@@ -643,6 +644,7 @@ class IntegrationTests(util.LoRATestCase):
             {
                 'name': 'Ballerup Familiehus',
                 'org': {'name': 'Ballerup Kommune',
+                        'municipality_code': 151,
                         'user_key': 'Ballerup Kommune',
                         'uuid': '3a87187c-f25a-40a1-8d42-312b2e2b43bd'},
                 'org_unit_type': {
@@ -712,6 +714,7 @@ class IntegrationTests(util.LoRATestCase):
                 "user_key": "sannes",
                 "uuid": "1ce40e25-6238-4202-9e93-526b348ec745",
                 "org": {
+                    "municipality_code": 151,
                     "name": "Ballerup Kommune",
                     "user_key": "Ballerup Kommune",
                     "uuid": "3a87187c-f25a-40a1-8d42-312b2e2b43bd",
@@ -727,6 +730,7 @@ class IntegrationTests(util.LoRATestCase):
                 "user_key": "sunes",
                 "uuid": "34705881-8af9-4254-ac3f-31738eae0be8",
                 "org": {
+                    "municipality_code": 151,
                     "name": "Ballerup Kommune",
                     "user_key": "Ballerup Kommune",
                     "uuid": "3a87187c-f25a-40a1-8d42-312b2e2b43bd",
@@ -1549,6 +1553,7 @@ class IntegrationTests(util.LoRATestCase):
                         'user_key': 'BALLERUP',
                         'uuid': '9f42976b-93be-4e0b-9a25-0dcb8af2f6b4',
                         'org': {
+                            'municipality_code': 151,
                             'name': 'Ballerup Kommune',
                             'user_key': 'Ballerup Kommune',
                             'uuid': '3a87187c-f25a-40a1-8d42-312b2e2b43bd',
@@ -1579,6 +1584,7 @@ class IntegrationTests(util.LoRATestCase):
                         'user_key': 'BIBLIOTEK',
                         'uuid': '921e44d3-2ec0-4c16-9935-2ec7976566dc',
                         'org': {
+                            'municipality_code': 151,
                             'name': 'Ballerup Kommune',
                             'user_key': 'Ballerup Kommune',
                             'uuid': '3a87187c-f25a-40a1-8d42-312b2e2b43bd',
@@ -1617,6 +1623,7 @@ class IntegrationTests(util.LoRATestCase):
                         'uuid': 'c12393e9-ee1d-4b91-a6a9-a17508c055c9',
                         'name': 'Ballerup Familiehus',
                         'org': {
+                            'municipality_code': 151,
                             'name': 'Ballerup Kommune',
                             'user_key': 'Ballerup Kommune',
                             'uuid': '3a87187c-f25a-40a1-8d42-312b2e2b43bd',
@@ -1655,6 +1662,7 @@ class IntegrationTests(util.LoRATestCase):
                         'user_key': 'IDRÆTSPARK',
                         'uuid': 'ef04b6ba-8ba7-4a25-95e3-774f38e5d9bc',
                         'org': {
+                            'municipality_code': 151,
                             'name': 'Ballerup Kommune',
                             'user_key': 'Ballerup Kommune',
                             'uuid': '3a87187c-f25a-40a1-8d42-312b2e2b43bd',

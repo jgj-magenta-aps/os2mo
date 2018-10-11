@@ -34,11 +34,14 @@ def get_one_organisation(c, orgid, org=None):
         if not org or not util.is_reg_valid(org):
             return None
 
-    attrs = org['attributter']['organisationegenskaber'][0]
+    (attrs,) = mapping.ORG_EGENSKABER_FIELD(org)
+
+    codes = mapping.MUNICIPALITY_FIELD.filtered(org)
 
     return {
         'name': attrs['organisationsnavn'],
         'user_key': attrs['brugervendtnoegle'],
+        'municipality_code': int(codes[0].group(1)) if codes else None,
         'uuid': orgid,
     }
 

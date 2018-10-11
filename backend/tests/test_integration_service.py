@@ -47,6 +47,7 @@ class Tests(util.LoRATestCase):
 
         org_list = [
             {
+                'municipality_code': 751,
                 'name': 'Aarhus Universitet',
                 'uuid': '456362c4-0ee4-4e5e-a72c-751239745e62',
                 'user_key': 'AU',
@@ -494,6 +495,7 @@ class Tests(util.LoRATestCase):
                     'to': None,
                 },
                 'org': {
+                    'municipality_code': 751,
                     'name': 'Aarhus Universitet',
                     'user_key': 'AU',
                     'uuid': '456362c4-0ee4-4e5e-a72c-751239745e62',
@@ -519,6 +521,7 @@ class Tests(util.LoRATestCase):
                 'user_key': 'root',
                 'uuid': '2874e1dc-85e6-4269-823a-e1125484dfd3',
                 'org': {
+                    'municipality_code': 751,
                     'name': 'Aarhus Universitet',
                     'user_key': 'AU',
                     'uuid': '456362c4-0ee4-4e5e-a72c-751239745e62',
@@ -553,6 +556,7 @@ class Tests(util.LoRATestCase):
                 'user_key': 'root',
                 'uuid': '2874e1dc-85e6-4269-823a-e1125484dfd3',
                 'org': {
+                    'municipality_code': 751,
                     'name': 'Aarhus Universitet',
                     'user_key': 'AU',
                     'uuid': '456362c4-0ee4-4e5e-a72c-751239745e62',
@@ -583,6 +587,7 @@ class Tests(util.LoRATestCase):
                     'to': None,
                 },
                 'org': {
+                    'municipality_code': 751,
                     'name': 'Aarhus Universitet',
                     'user_key': 'AU',
                     'uuid': '456362c4-0ee4-4e5e-a72c-751239745e62',
@@ -659,6 +664,7 @@ class Tests(util.LoRATestCase):
                 'user_key': 'andersand',
                 'cpr_no': '0906340000',
                 'org': {
+                    'municipality_code': 751,
                     'name': 'Aarhus Universitet',
                     'user_key': 'AU',
                     'uuid': '456362c4-0ee4-4e5e-a72c-751239745e62',
@@ -674,6 +680,7 @@ class Tests(util.LoRATestCase):
                 'user_key': 'fedtmule',
                 'cpr_no': '1205320000',
                 'org': {
+                    'municipality_code': 751,
                     'name': 'Aarhus Universitet',
                     'user_key': 'AU',
                     'uuid': '456362c4-0ee4-4e5e-a72c-751239745e62',

@@ -5,11 +5,15 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
+
 import collections
 import enum
 import functools
 import operator
+import re
 import typing
+
+MUNICIPALITY_CODE_PATTERN = re.compile('urn:dk:kommune:(\d+)')
 
 # Common
 
@@ -127,6 +131,9 @@ class FieldTuple(object):
     def filter_fn(self) -> typing.Callable[[dict], bool]:
         return self.__filter_fn
 
+    def filtered(self, obj):
+        return [self.__filter_fn(val) for val in self.get(obj)]
+
     def __repr__(self):
         return '{}({!r}, FieldTypes.{}, {!r})'.format(
             type(self).__name__,
@@ -236,6 +243,17 @@ MANAGER_LEVEL_FIELD = FieldTuple(
 SINGLE_ITSYSTEM_FIELD = FieldTuple(
     path=('relationer', 'tilknyttedeitsystemer'),
     type=FieldTypes.ADAPTED_ZERO_TO_MANY,
+)
+
+ORG_EGENSKABER_FIELD = FieldTuple(
+    path=('attributter', 'organisationegenskaber'),
+    type=FieldTypes.ZERO_TO_ONE,
+)
+
+MUNICIPALITY_FIELD = FieldTuple(
+    path=('relationer', 'myndighed'),
+    type=FieldTypes.ZERO_TO_ONE,
+    filter_fn=lambda x: MUNICIPALITY_CODE_PATTERN.fullmatch(x.get('urn', ''))
 )
 
 ENGAGEMENT_FIELDS = {
